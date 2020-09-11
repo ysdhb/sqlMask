@@ -15,6 +15,10 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>atopcalcite</module>
+        <module>core-common</module>
+        <module>core-mask</module>
+        <module>core-metadata</module>
+        <module>core-policy</module>
     </modules>
 
     <dependencies>

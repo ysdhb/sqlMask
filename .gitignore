@@ -19,6 +19,29 @@
 *.tar.gz
 *.rar
 .idea
+*.imi
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+
+*~
+target
+.idea
+*.iml
+settings.xml
+.classpath.txt
+.fullclasspath.txt
+
+# eclipse
+.project
+.buildpath
+.classpath
+.settings
+.checkstyle
+
+# netbeans
+nb-configuration.xml
+*/nb-configuration.xml
+
+# End .gitignore
