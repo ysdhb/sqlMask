@@ -1,30 +1,29 @@
 package yhh.com.mask.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 import yhh.com.mask.bean.SqlRequest;
 import yhh.com.mask.service.QueryService;
+import yhh.com.mask.service.QueryService2;
 
-@RestController
-@RequestMapping(value = "/")
+import java.util.Locale;
+
+@Controller
 public class QueryController {
     @Autowired
-    QueryService queryService;
+    QueryService2 queryService;
 
-    @RequestMapping(value = "/query", method = RequestMethod.POST, produces = { "application/json" })
+    @PostMapping(path = "/query")
     @ResponseBody
     public String query(@RequestBody SqlRequest sql) throws Exception {
-//        String path = "/opt/yhh/sqlmask/web-app/src/main/resources/sales-csv.json";
-//        queryService.init();
         return queryService.getMaskSql(sql.getSql());
     }
 
-    @RequestMapping("/test")
-    public String hello() {
+    @GetMapping(path = "/test")
+    @ResponseBody
+    public String hello() throws Exception {
+        queryService.getMaskSql("select nn from (select name nn from emps) a".toUpperCase(Locale.ROOT));
         return "Hello World!";
     }
 }

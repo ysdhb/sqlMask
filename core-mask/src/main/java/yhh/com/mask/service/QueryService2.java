@@ -19,10 +19,12 @@ import org.apache.calcite.sql.fun.SqlCase;
 import org.apache.calcite.sql.parser.SqlParseException;
 import org.apache.calcite.sql.parser.SqlParser;
 import org.apache.calcite.sql.parser.ddl.SqlDdlParserImpl;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import yhh.com.mask.common.MaskException;
 import yhh.com.mask.query.QueryConnection;
 
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.util.HashMap;
@@ -37,13 +39,16 @@ public class QueryService2 {
         qs.getMaskSql("select nn from (select name nn from emps) a".toUpperCase(Locale.ROOT));
     }
 
+    @Value("${mask.calcite.model.path}")
+    private String modelPath;
+
     public String getMaskSql(String sql) throws Exception {
         MaskContext context = MaskContextFacade.current();
         Thread.currentThread().setName(context.getMaskId());
         sql = getSelectPartFromDdlSql(sql);
         context.setSql(sql);
 
-        Connection conn = QueryConnection.getConnection();
+        Connection conn = QueryConnection.getConnection(Paths.get(modelPath).toAbsolutePath().toString());
         Statement stmt = conn.createStatement();
         stmt.executeQuery(sql);
         addAliasForColumn(context);
