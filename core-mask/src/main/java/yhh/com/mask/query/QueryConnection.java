@@ -14,7 +14,7 @@ import static yhh.com.mask.common.Constants.CALCITE_AUTH_USER;
 public class QueryConnection {
 
     public static Connection getConnection() throws Exception {
-        String path = "/opt/code/sqlMask/mask/src/main/resources/sales-csv.json";
+        String path = "D:\\code\\新建文件夹\\sqlMask\\core-mask\\src\\main\\resources\\sales-csv.json";
 //        MaskContext context = MaskContextFacade.current();
 //        Thread.currentThread().setName(context.getMaskId());
 
