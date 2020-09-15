@@ -7,6 +7,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -15,7 +17,8 @@ public class PropertiesFilePolicyStorage extends AbstractPolicyStorage {
 
     @Override
     public Map<String, String> loadPolicies(String source) {
-        File file = new File("/opt/yhh/sqlmask/common-lib/src/main/resources/mysql-mask-policies.properties");
+        Path path = Paths.get("core-policy/src/main/resources/mysql-mask-policies.properties");
+        File file = new File(path.toAbsolutePath().toString());
         Properties properties = new Properties();
         Map<String, String> map = new HashMap<>();
         InputStream in = null;

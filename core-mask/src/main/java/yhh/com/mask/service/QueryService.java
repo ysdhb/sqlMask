@@ -216,7 +216,7 @@ public class QueryService {
     }
 
     private static Map<String, String> getPolicy(String source) {
-        PolicyStorage policyStorage = (PolicyStorage) MaskPolicyFactory.getInstance("com.zte.policy.PropertiesFilePolicyStorage");
+        PolicyStorage policyStorage = (PolicyStorage) MaskPolicyFactory.getInstance("yhh.com.policy.PropertiesFilePolicyStorage");
         return policyStorage.loadPolicies(source);
 
     }
