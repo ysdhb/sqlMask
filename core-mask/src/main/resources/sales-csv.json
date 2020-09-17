@@ -30,7 +30,7 @@
       "functions": [
         {
           "name": "CONCAT",
-          "className": "yhh.com.mask.function.Smalls$MyConcate"
+          "className": "yhh.com.mask.function.ConcatUDF"
         }
       ]
     }

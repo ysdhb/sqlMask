@@ -33,8 +33,16 @@ public class QueryService3 {
     public static void main(String[] args) throws Exception {
         QueryService3 q3 = new QueryService3();
         String sql = "select nn from (select name nn from emps) a".toUpperCase(Locale.ROOT);
-//        sql = "select name from (select name from emps) a".toUpperCase(Locale.ROOT);
-        q3.getMaskSql(sql);
+        sql = "select name from (select name from emps) a".toUpperCase(Locale.ROOT);
+        sql = "select name from emps";
+        sql = "with t1 as (select name from emps union select name from depts) select name from t1";
+        sql = "with t1 as (select name aa from emps union select name aa from depts) select aa from t1";
+        sql = "select a.name, a.aa from (select emps.name, emps.deptno as aa from sales.emps as emps union select depts.name, depts.deptno as aa from sales.depts as depts) as a";
+        sql = "with t1 as (select name from emps), t2 as (select name from t1) select name from t2";
+        sql = "with t1 as (select name ss,deptno from emps union select name ss,deptno from depts) select concat(ss,ss) dd ,case deptno when 10 then deptno when 20 then deptno + 10 else 3 end dd2 from t1";
+        sql = "select case when deptno = 10 then deptno when deptno = 20 then deptno + 10 else 3 end dd2 from emps";
+
+        System.out.println(q3.getMaskSql(sql.toUpperCase(Locale.ROOT)));
     }
 
     public String getMaskSql(String sql) throws Exception {
@@ -68,7 +76,6 @@ public class QueryService3 {
             String ret = rewriteSqlWithPolicy(context.getSql(), sqlNodeAndOriginColumnStringMap);
             ret = getSqlNode(ret).toSqlString(null, true)
                     .getSql().replace("`", "").toLowerCase(Locale.ROOT);
-            System.out.println(ret);
             return context.getDdlPrefix() + ret;
         } finally {
             context.resetContext(sql);
@@ -223,7 +230,11 @@ public class QueryService3 {
                 sb.append(maskFunction.replace("col", columns[i]));
                 //先简单加个别名 后面可以放在前置处理中
                 if (ret[i + 1].trim().startsWith("FROM") || ret[i + 1].trim().startsWith(",")) {
-                    sb.append(columns[i]);
+                    if (columns[i].contains(".")) {
+                        sb.append(" ").append(columns[i].split("\\.")[1]);
+                    } else {
+                        sb.append(columns[i]);
+                    }
                 }
             } else {
                 sb.append(columns[i]);

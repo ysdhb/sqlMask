@@ -1,7 +1,8 @@
 package org.apache.calcite.mask;
 
 import com.google.common.collect.Maps;
-import org.apache.calcite.sql.SqlNode;
+import org.apache.calcite.sql.*;
+import org.apache.calcite.sql.fun.SqlCase;
 import org.apache.calcite.sql.parser.SqlParserPos;
 
 import java.util.ArrayList;
@@ -64,17 +65,41 @@ public class MaskContext {
         SqlParserPos nodePos = node.getParserPosition();
         int start = nodePos.getColumnNum();
         int end = nodePos.getEndColumnNum();
+        List<SqlNode> whenList = new ArrayList<>();
         for (SqlNode sqlNode : nodes) {
+            if (sqlNode instanceof SqlCase ||
+                    (sqlNode instanceof SqlBasicCall && ((SqlBasicCall) sqlNode).getOperator() instanceof SqlAsOperator
+                            && ((SqlBasicCall) sqlNode).operands[0] instanceof SqlCase)) {
+                removeSqlCaseWhenList(whenList, sqlNode);
+            }
+            if (whenList.contains(node)) {
+                return;
+            }
             SqlParserPos pos = sqlNode.getParserPosition();
             if (pos.getColumnNum() <= start && pos.getEndColumnNum() >= end) {
                 List<SqlNode> nodeList = new ArrayList<>();
-                if (this.nodeMap.get(sqlNode) != null){
+                if (this.nodeMap.get(sqlNode) != null) {
                     nodeList = this.nodeMap.get(sqlNode);
                 }
                 nodeList.add(node);
-                this.nodeMap.put(sqlNode,nodeList);
+                this.nodeMap.put(sqlNode, nodeList);
                 break;
             }
+        }
+    }
+
+    public void removeSqlCaseWhenList(List<SqlNode> nodes, SqlNode node) {
+        if (node instanceof SqlCase) {
+            List<SqlNode> whenList = ((SqlCase) node).getWhenOperands().getList();
+            for (SqlNode sn : whenList) {
+                removeSqlCaseWhenList(nodes, sn);
+            }
+        } else if (node instanceof SqlBasicCall) {
+            if (((SqlBasicCall) node).getOperator() instanceof SqlAsOperator || ((SqlBasicCall) node).getOperator() instanceof SqlBinaryOperator) {
+                removeSqlCaseWhenList(nodes, ((SqlBasicCall) node).getOperands()[0]);
+            }
+        } else if (node instanceof SqlIdentifier) {
+            nodes.add(node);
         }
     }
 
