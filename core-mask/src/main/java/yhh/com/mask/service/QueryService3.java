@@ -42,6 +42,8 @@ public class QueryService3 {
         sql = "with t1 as (select name ss,deptno from emps union select name ss,deptno from depts) select concat(ss,ss) dd ,case deptno when 10 then deptno when 20 then deptno + 10 else 3 end dd2 from t1";
         sql = "select case when deptno = 10 then deptno when deptno = 20 then deptno + 10 else 3 end dd2 from emps";
 
+        sql = "select name,(select city from emps where name = 'ss') tname from emps";
+        sql = "select 'ff' from emps";
         System.out.println(q3.getMaskSql(sql.toUpperCase(Locale.ROOT)));
     }
 
@@ -67,6 +69,17 @@ public class QueryService3 {
             Map<SqlNode, List<SqlNode>> nodeMap = context.getNodeMap();
 
             for (SqlNode node : getSelectList(context.getNode())) {
+                if (nodeMap.get(node) == null) {
+                    List<SqlNode> nodeList = new ArrayList<>();
+                    extractSqlNodeFromAll(node, nodeList);
+                    for (SqlNode node1 : nodeList) {
+                        if (nodeMap.containsKey(node1)) {
+                            getOriginColumn(node1, context, sqlNodeAndOriginColumnStringMap);
+                        }
+                    }
+                    continue;
+                }
+
                 for (SqlNode node1 : nodeMap.get(node)) {
                     getOriginColumn(node1, context, sqlNodeAndOriginColumnStringMap);
                 }
@@ -82,6 +95,20 @@ public class QueryService3 {
         }
 
 
+    }
+
+    private void extractSqlNodeFromAll(SqlNode node, List<SqlNode> nodes) {
+        if (node instanceof SqlIdentifier) {
+            nodes.add(node);
+        } else if (node instanceof SqlBasicCall) {
+            for (int i = 0; i < ((SqlBasicCall) node).operands.length; i++) {
+                extractSqlNodeFromAll(((SqlBasicCall) node).operands[i], nodes);
+            }
+        } else if (node instanceof SqlSelect) {
+            for (SqlNode node1 : ((SqlSelect) node).getSelectList().getList()) {
+                extractSqlNodeFromAll(node1, nodes);
+            }
+        }
     }
 
     private List<SqlNode> getSelectList(SqlNode node) {
@@ -208,6 +235,10 @@ public class QueryService3 {
         Map<String, String> policies = getPolicy("mysql");
         //将需要重写的sql语句按顺序重新排列
         List<Pair<Integer, Integer>> posList = getAllPos(sqlNodeAndOriginColumnStringMap.keySet());
+        if (posList.size() == 0) {
+            return sql;
+        }
+
         posList.sort(Comparator.comparingInt(Pair::getLeft));
         //将对应的sqlNode也重新排列
         List<SqlNode> nodeList = new ArrayList<>(sqlNodeAndOriginColumnStringMap.keySet());
