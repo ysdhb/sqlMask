@@ -853,6 +853,15 @@ public class SqlValidatorImpl implements SqlValidatorWithHints {
             deriveType(scope, outermostNode);
         }
         TRACER.trace("After validation: {}", outermostNode);
+        if (context.preCheck.get()) {
+            context.preCheck.set(false);
+            context.setSql(outermostNode.toSqlString(null, true)
+                    .getSql().replace("`", "")
+                    .toUpperCase(Locale.ROOT)
+                    .replaceAll("[\\n\\r]"," ")
+                    .replaceAll("\\s"," "));
+            throw new CalciteException("pre check stop",null);
+        }
         return outermostNode;
     }
 

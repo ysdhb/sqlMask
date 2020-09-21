@@ -40,11 +40,15 @@ public class QueryService3 {
         sql = "select a.name, a.aa from (select emps.name, emps.deptno as aa from sales.emps as emps union select depts.name, depts.deptno as aa from sales.depts as depts) as a";
         sql = "with t1 as (select name from emps), t2 as (select name from t1) select name from t2";
         sql = "with t1 as (select name ss,deptno from emps union select name ss,deptno from depts) select concat(ss,ss) dd ,case deptno when 10 then deptno when 20 then deptno + 10 else 3 end dd2 from t1";
-//        sql = "select case when deptno = 10 then deptno when deptno = 20 then deptno + 10 else 3 end dd2 from emps";
+        sql = "select case when deptno = 10 then deptno when deptno = 20 then deptno + 10 else 3 end dd2 from emps";
         sql = "select name,(select concat(city,name) dd from emps where name = 'ss') tname from emps";
         sql = "select 'ff' from emps";
 //        sql = "select name,(select city dd from emps where name = 'ss') tname from emps";
         sql = "select city from emps";
+        sql = "select * from emps";
+        sql = "select * from (select * from emps) t1";
+        sql = "with t1 as (select * from emps) select * from t1";
+        sql = "select * from (select concat(name,city) from emps) t1";
         System.out.println(q3.getMaskSql(sql.toUpperCase(Locale.ROOT)));
     }
 
@@ -60,9 +64,23 @@ public class QueryService3 {
             modelPath = "core-mask/src/main/resources/sales-csv.json";
             Connection conn = QueryConnection.getConnection(Paths.get(modelPath).toAbsolutePath().toString());
             Statement stmt = conn.createStatement();
+            ///这部分逻辑后期挪到
+            //yhh.com.mask.handler.ExpandStarAndCaseWhenHandler里面
             try {
                 stmt.executeQuery(sql);
             }catch (Throwable e){
+                System.out.println(e.getMessage());
+            }
+            if (context.getSql().contains("EXPR$")){
+                return context.getSql() + " need check";
+            }
+            context.resetContext(context.getSql());
+            //上面代码测试使用
+//////////////////////////////////
+            try {
+                stmt.executeQuery(context.getSql());
+            }catch (Throwable e){
+                System.out.println(e.getMessage());
             }
 
 
@@ -105,7 +123,8 @@ public class QueryService3 {
             // 5. 重写sql
             String ret = rewriteSqlWithPolicy(context.getSql(), sqlNodeAndOriginColumnStringMap);
             ret = getSqlNode(ret).toSqlString(null, true)
-                    .getSql().replace("`", "").toLowerCase(Locale.ROOT);
+                    .getSql().replace("`", "")
+                    .toLowerCase(Locale.ROOT);
             return context.getDdlPrefix() + ret;
         } finally {
             context.resetContext(sql);

@@ -38,7 +38,7 @@ public class MaskContext {
     }
 
     public AtomicBoolean isMasking = new AtomicBoolean(true);
-    public AtomicBoolean needCheck = new AtomicBoolean(true);
+    public AtomicBoolean preCheck = new AtomicBoolean(true);
 
 
     public Map<SqlNode, ColumnDesc> getDetailedColumnMap() {
@@ -123,7 +123,7 @@ public class MaskContext {
         detailedColumnMap = Maps.newConcurrentMap();
         nodeMap = Maps.newConcurrentMap();
         this.isMasking.set(true);
-        this.needCheck.set(false);
+        this.preCheck.set(false);
         this.setNode(null);
         this.setSql(sql);
     }
