@@ -12,6 +12,7 @@ import org.apache.calcite.sql.parser.SqlParseException;
 import org.apache.calcite.sql.parser.SqlParser;
 import org.apache.calcite.sql.parser.ddl.SqlDdlParserImpl;
 import yhh.com.mask.common.MaskException;
+import yhh.com.mask.query.QueryUtil;
 
 import java.util.List;
 
@@ -31,7 +32,7 @@ public class ExtractSelectPartFromDdlSqlHandler implements Handler {
     private String getSelectPartFromDdlSql(String sql) {
         SqlNode sqlNode = null;
         try {
-            sqlNode = getSqlNode(sql);
+            sqlNode = QueryUtil.getSqlNode(sql);
         } catch (SqlParseException e) {
             e.printStackTrace();
         }
@@ -59,13 +60,5 @@ public class ExtractSelectPartFromDdlSqlHandler implements Handler {
                 throw new MaskException();
             }
         }
-    }
-
-    //处理ddl语句的sqlParseFactory
-    private SqlNode getSqlNode(String sql) throws SqlParseException {
-        SqlParser parser = SqlParser.create(sql, SqlParser.configBuilder()
-                .setParserFactory(SqlDdlParserImpl.FACTORY)
-                .build());
-        return parser.parseStmt();
     }
 }

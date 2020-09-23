@@ -7,14 +7,11 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class MaskContextFacade {
     private static final ConcurrentMap<String, MaskContext> RUNNING_CTX_MAP = Maps.newConcurrentMap();
-    private static final ThreadLocal<MaskContext> CURRENT_CTX = new ThreadLocal<MaskContext>() {
-        @Override
-        protected MaskContext initialValue() {
-            MaskContext context = new MaskContext();
-            RUNNING_CTX_MAP.put(context.getMaskId(), context);
-            return context;
-        }
-    };
+    private static final ThreadLocal<MaskContext> CURRENT_CTX = ThreadLocal.withInitial(() -> {
+        MaskContext context = new MaskContext();
+        RUNNING_CTX_MAP.put(context.getMaskId(), context);
+        return context;
+    });
 
     public static MaskContext current() {
         return CURRENT_CTX.get();

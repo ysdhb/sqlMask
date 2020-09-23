@@ -1,7 +1,6 @@
 package yhh.com.mask.handler;
 
 import org.apache.calcite.mask.MaskContext;
-import org.apache.calcite.sql.SqlAsOperator;
 import org.apache.calcite.sql.SqlBasicCall;
 import org.apache.calcite.sql.SqlFunction;
 import org.apache.calcite.sql.SqlNode;
@@ -11,13 +10,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import yhh.com.mask.policy.MaskPolicyFactory;
 import yhh.com.mask.policy.PolicyStorage;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class RewriteSqlWithPolicyHandler implements Handler {
 

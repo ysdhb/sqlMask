@@ -3,6 +3,7 @@ package yhh.com.mask.handler;
 import org.apache.calcite.mask.ColumnDesc;
 import org.apache.calcite.mask.MaskContext;
 import org.apache.calcite.sql.*;
+import org.apache.calcite.sql.fun.SqlCase;
 import yhh.com.mask.query.QueryUtil;
 
 import java.util.HashMap;
@@ -65,6 +66,25 @@ public class ExtractOriginColumnHandler implements Handler {
                 }
             }
             //后面的不需要了，留着防万一
+            //改了之后就需要了
+            //原来是只从select list 中
+            //后来又改成了 从node map中获取
+            //这种 从 select list 中 不行select name,(select city dd from emps where name = 'ss') tname from emps
+        } else if (node instanceof SqlCase) {
+//            List<SqlNode> whenList = ((SqlCase) node).getWhenOperands().getList();
+//            for (SqlNode node1 : whenList) {
+//                getOriginColumn(node1, context, sqlNodeAndOriginColumnStringMap);
+//            }
+            List<SqlNode> thenList = ((SqlCase) node).getThenOperands().getList();
+            for (SqlNode node2 : thenList) {
+                getOriginColumn(node2, context, sqlNodeAndOriginColumnStringMap);
+            }
+            SqlNode elseExpr = ((SqlCase) node).getElseOperand();
+            getOriginColumn(elseExpr, context, sqlNodeAndOriginColumnStringMap);
+        } else if (node instanceof SqlWindow) {
+            System.out.println("to do");
+        } else {
+            System.out.println("other situation");
         }
     }
 }
