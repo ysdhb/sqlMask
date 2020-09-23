@@ -1,9 +1,6 @@
 package yhh.com.mask.query;
 
-import org.apache.calcite.sql.SqlIdentifier;
-import org.apache.calcite.sql.SqlNode;
-import org.apache.calcite.sql.SqlSelect;
-import org.apache.calcite.sql.SqlWith;
+import org.apache.calcite.sql.*;
 import org.apache.calcite.sql.parser.SqlParseException;
 import org.apache.calcite.sql.parser.SqlParser;
 import org.apache.calcite.sql.parser.SqlParserPos;
@@ -13,6 +10,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class QueryUtil {
+
+    //todo:获取别名的方法，简单判断，还需要再改
+    public static String getColumnAlias(SqlNode node) {
+        if (node instanceof SqlBasicCall) {
+            return ((SqlBasicCall) node).operands[1].toString();
+        } else {
+            String name = node.toString();
+            if (name.split("\\.").length > 1)
+                return name.split("\\.")[1];
+            return name;
+        }
+    }
+
     public String removeCommentInSql(String sql) {
         // match two patterns, one is "-- comment", the other is "/* comment */"
         final String[] commentPatterns = new String[]{"--(?!.*\\*/).*?[\r\n]", "/\\*(.|\r|\n)*?\\*/"};

@@ -6,13 +6,14 @@ import org.springframework.web.bind.annotation.*;
 import yhh.com.mask.bean.SqlRequest;
 import yhh.com.mask.service.QueryService;
 import yhh.com.mask.service.QueryService2;
+import yhh.com.mask.service.QueryService3;
 
 import java.util.Locale;
 
 @Controller
 public class QueryController {
     @Autowired
-    QueryService2 queryService;
+    private QueryService3 queryService;
 
     @PostMapping(path = "/query")
     @ResponseBody

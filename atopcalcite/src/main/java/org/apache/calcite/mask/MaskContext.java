@@ -127,4 +127,14 @@ public class MaskContext {
         this.setNode(null);
         this.setSql(sql);
     }
+
+    private Map<SqlNode, String> nodeColumnMap;
+
+    public Map<SqlNode, String> getNodeColumnMap() {
+        return nodeColumnMap;
+    }
+
+    public void setNodeColumnMap(Map<SqlNode, String> nodeColumnMap) {
+        this.nodeColumnMap = nodeColumnMap;
+    }
 }

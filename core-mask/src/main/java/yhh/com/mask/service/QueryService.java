@@ -245,7 +245,7 @@ public class QueryService {
         return sqlNode.toSqlString(null, true).getSql();
     }
 
-    @PostConstruct
+//    @PostConstruct
     public void init() {
         String path = "D:\\code\\新建文件夹\\sqlMask\\core-mask\\src\\main\\resources\\sales-csv.json";
         MaskContext context = MaskContextFacade.current();
