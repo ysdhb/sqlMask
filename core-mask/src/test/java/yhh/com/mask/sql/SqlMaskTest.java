@@ -17,8 +17,8 @@ public class SqlMaskTest {
 
 
     private void compareSql(String maskSql, String expectSql){
-        Assert.assertEquals(maskSql.replace("\r", " ").replace("\n", System.getProperty("line.separator")).replaceAll("\\s+", " "),
-                expectSql.replace("\r", " ").replace("\n", System.getProperty("line.separator")).replaceAll("\\s+", " "));
+        Assert.assertEquals(maskSql.replace("\r", " ").replace("\n", " ").replaceAll("\\s+", " "),
+                expectSql.replace("\r", " ").replace("\n", " ").replaceAll("\\s+", " "));
     }
 
     @Test

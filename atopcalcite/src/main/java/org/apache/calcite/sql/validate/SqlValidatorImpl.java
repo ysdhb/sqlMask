@@ -858,8 +858,9 @@ public class SqlValidatorImpl implements SqlValidatorWithHints {
             context.setSql(outermostNode.toSqlString(null, true)
                     .getSql().replace("`", "")
                     .toUpperCase(Locale.ROOT)
-                    .replaceAll("[\\n\\r]"," ")
-                    .replaceAll("\\s"," "));
+                    .replace("\r", " ")
+                    .replace("\n", " ")
+                    .replaceAll("\\s+", " "));
             throw new CalciteException("pre check stop",null);
         }
         return outermostNode;

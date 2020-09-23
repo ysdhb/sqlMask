@@ -25,9 +25,8 @@ public class ExpandStarAndCaseWhenHandler implements Handler {
             //pre check 提前跳出
             log.error(e.getMessage());
         }
-        ///这部分逻辑后期挪到
-        //yhh.com.mask.handler.ExpandStarAndCaseWhenHandler里面
         if (context.getSql().contains("EXPR$")) {
+            log.error("calcite add column alias EXPR$, " + context.getSql() + " need check");
             return context.getSql() + " need check";
         }
         context.resetContext(context.getSql());
