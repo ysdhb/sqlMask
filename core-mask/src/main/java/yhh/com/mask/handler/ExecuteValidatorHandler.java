@@ -1,11 +1,14 @@
 package yhh.com.mask.handler;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.sql.Statement;
 
-public class ExecuteValidatorHanler implements Handler {
+@Slf4j
+public class ExecuteValidatorHandler implements Handler {
     private final Statement stmt;
 
-    public ExecuteValidatorHanler(Statement stmt) {
+    public ExecuteValidatorHandler(Statement stmt) {
         this.stmt = stmt;
     }
 
@@ -14,8 +17,9 @@ public class ExecuteValidatorHanler implements Handler {
         try {
             stmt.executeQuery(sql);
         } catch (Throwable e) {
-            System.out.println(e.getMessage());
+            //todo:以后写了提前跳出逻辑后删除
+            log.error(e.getMessage());
         }
-        return null;
+        return sql;
     }
 }

@@ -1,5 +1,6 @@
 package yhh.com.mask.handler;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.calcite.mask.ColumnDesc;
 import org.apache.calcite.mask.MaskContext;
 import org.apache.calcite.sql.*;
@@ -10,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 public class ExtractOriginColumnHandler implements Handler {
 
     private final MaskContext context;
@@ -82,9 +84,9 @@ public class ExtractOriginColumnHandler implements Handler {
             SqlNode elseExpr = ((SqlCase) node).getElseOperand();
             getOriginColumn(elseExpr, context, sqlNodeAndOriginColumnStringMap);
         } else if (node instanceof SqlWindow) {
-            System.out.println("to do");
+            log.error("sql window function to do");
         } else {
-            System.out.println("other situation");
+            log.error("other situation");
         }
     }
 }

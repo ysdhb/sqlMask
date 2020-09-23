@@ -21,7 +21,7 @@ public class AddColumnAliasHandler implements Handler {
     @Override
     public String processSql(String sql) {
         addAliasForColumn(context);
-        return null;
+        return sql;
     }
 
     private void addAliasForColumn(MaskContext context) {

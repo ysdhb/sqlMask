@@ -2,15 +2,12 @@ package yhh.com.mask.service;
 
 import org.apache.calcite.mask.MaskContext;
 import org.apache.calcite.mask.MaskContextFacade;
-import org.apache.calcite.sql.SqlNode;
 import org.apache.calcite.sql.parser.SqlParseException;
-import org.apache.calcite.sql.parser.SqlParser;
-import org.apache.calcite.sql.parser.ddl.SqlDdlParserImpl;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import yhh.com.mask.handler.AddColumnAliasHandler;
-import yhh.com.mask.handler.ExecuteValidatorHanler;
+import yhh.com.mask.handler.ExecuteValidatorHandler;
 import yhh.com.mask.handler.ExpandStarAndCaseWhenHandler;
 import yhh.com.mask.handler.ExtractOriginColumnHandler;
 import yhh.com.mask.handler.ExtractSelectPartFromDdlSqlHandler;
@@ -62,7 +59,7 @@ public class QueryService3 {
         handlerChain.addHandler(new RemoveSqlCommentHandler());
         handlerChain.addHandler(new ExtractSelectPartFromDdlSqlHandler(context));
         handlerChain.addHandler(new ExpandStarAndCaseWhenHandler(context, stmt));
-        handlerChain.addHandler(new ExecuteValidatorHanler(stmt));
+        handlerChain.addHandler(new ExecuteValidatorHandler(stmt));
         handlerChain.addHandler(new AddColumnAliasHandler(context));
         handlerChain.addHandler(new ExtractOriginColumnHandler(context));
         handlerChain.addHandler(new RewriteSqlWithPolicyHandler(context));

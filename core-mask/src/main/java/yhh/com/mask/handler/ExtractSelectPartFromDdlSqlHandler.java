@@ -1,16 +1,10 @@
 package yhh.com.mask.handler;
 
 import org.apache.calcite.mask.MaskContext;
-import org.apache.calcite.sql.SqlInsert;
-import org.apache.calcite.sql.SqlNode;
-import org.apache.calcite.sql.SqlOrderBy;
-import org.apache.calcite.sql.SqlSelect;
-import org.apache.calcite.sql.SqlWith;
+import org.apache.calcite.sql.*;
 import org.apache.calcite.sql.ddl.SqlCreateTable;
 import org.apache.calcite.sql.ddl.SqlCreateView;
 import org.apache.calcite.sql.parser.SqlParseException;
-import org.apache.calcite.sql.parser.SqlParser;
-import org.apache.calcite.sql.parser.ddl.SqlDdlParserImpl;
 import yhh.com.mask.common.MaskException;
 import yhh.com.mask.query.QueryUtil;
 
@@ -57,7 +51,7 @@ public class ExtractSelectPartFromDdlSqlHandler implements Handler {
             } else if (node instanceof SqlInsert) {
                 node = ((SqlInsert) node).getSource();
             } else {
-                throw new MaskException();
+                throw new MaskException("other situation");
             }
         }
     }

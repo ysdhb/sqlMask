@@ -1,10 +1,12 @@
 package yhh.com.mask.handler;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.calcite.mask.MaskContext;
 
 import java.sql.Statement;
 import java.util.Locale;
 
+@Slf4j
 public class ExpandStarAndCaseWhenHandler implements Handler {
 
     private final MaskContext context;
@@ -20,7 +22,8 @@ public class ExpandStarAndCaseWhenHandler implements Handler {
         try {
             stmt.executeQuery(sql.toUpperCase(Locale.ROOT));
         } catch (Throwable e) {
-            System.out.println(e.getMessage());
+            //pre check 提前跳出
+            log.error(e.getMessage());
         }
         ///这部分逻辑后期挪到
         //yhh.com.mask.handler.ExpandStarAndCaseWhenHandler里面
