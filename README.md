@@ -23,7 +23,7 @@
 
 2.不提供UDF的实现，通过重写SQL语句，查询还是在数据仓库
 
-![项目架构图](https://github.com/xylou/sqlMask/blob/master/doc/postman%20request.jpg)
+![项目架构图](https://github.com/xylou/sqlMask/blob/master/doc/%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%E5%9B%BE.png)
 
 
 # 使用简介
@@ -57,7 +57,8 @@ sales.depts.name=hash_fun3(1,7,col,'*')
 
 对外rest接口，通过Postman打开发送`Post`请求
 
-![postman 请求](https://github.com/xylou/sqlMask/blob/master/doc/%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%E5%9B%BE.png)
+
+![postman 请求](https://github.com/xylou/sqlMask/blob/master/doc/postman%20request.jpg)
 
 `http://127.0.0.1:8080/query`
 请求体为：
