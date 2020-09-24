@@ -10,14 +10,22 @@
 创建的临时表也需要继承原始表的脱敏策略
 
 # 功能简介
-####前提
+
+##前提
+
 1.项目只考虑SQL语句形式的脱敏，并且是UDF形式的脱敏
 
 2.不提供UDF的实现，通过重写SQL语句，查询还是在数据仓库
+
 ![项目架构图](https://github.com/xylou/sqlMask/blob/master/doc/postman%20request.jpg)
+
+
 #使用简介
+
 ###暂时提供了两张表
+
 ####数据库sales
+
 - DEPTS表
 ```
 DEPTNO:int,NAME:string
