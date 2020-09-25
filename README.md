@@ -1,5 +1,5 @@
 # todo
-![todo](https://github.com/xylou/sqlMask/blob/master/doc/todo.md)
+[todo](https://github.com/xylou/sqlMask/blob/master/doc/todo.md)
 
 
 # 项目简介
