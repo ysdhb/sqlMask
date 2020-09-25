@@ -26,6 +26,7 @@
 ![项目架构图](https://github.com/xylou/sqlMask/blob/master/doc/%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%E5%9B%BE.png)
 
 基于 `Calcite` 的 `SqlValidatorImpl` 实现的查找原始列
+
 利用 Calcite 在 SQL语句校验阶段，记录Column的上一个Select信息，递归查找
 
 # 使用简介
