@@ -35,7 +35,7 @@
 
 # 使用简介
 
-### 暂时提供了两张表
+### 暂时提供了两张表供测试使用
 
 #### 数据库sales有两张表
 
@@ -50,7 +50,8 @@ GENDER:string,CITY:string,EMPID:int,
 AGE:int,SLACKER:boolean,MANAGER:boolean,JOINEDAT:date
 ```
 
-- 脱敏策略配置了三个
+- 脱敏策略配置了三个，在core—policy的配置文件中，可以修改
+
 ```
 sales.emps.name=hash_fun(1,5,col,'*')
 sales.emps.deptno=hash_fun2(1,6,col,'*')
