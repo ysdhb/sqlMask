@@ -5,6 +5,7 @@ import org.apache.calcite.mask.ColumnDesc;
 import org.apache.calcite.mask.MaskContext;
 import org.apache.calcite.sql.*;
 import org.apache.calcite.sql.fun.SqlCase;
+import org.apache.calcite.sql.parser.SqlParserPos;
 import yhh.com.mask.query.QueryUtil;
 
 import java.util.HashMap;
@@ -26,19 +27,30 @@ public class ExtractOriginColumnHandler implements Handler {
         Map<SqlNode, String> sqlNodeAndOriginColumnStringMap = new HashMap<>();
         Map<SqlNode, List<SqlNode>> nodeMap = context.getNodeMap();
 
+        SqlNode selectNode = context.getNode();
+        if (context.getNode() instanceof SqlWith) {
+            selectNode = ((SqlWith) context.getNode()).body;
+        }
+        SqlParserPos selectNodePos = ((SqlSelect) selectNode).getSelectList().getParserPosition();
+        int startNum = selectNodePos.getColumnNum();
+        int endNum = selectNodePos.getEndColumnNum();
+
         for (SqlNode node2 : nodeMap.keySet()) {
-            getOriginColumn(node2, context, sqlNodeAndOriginColumnStringMap);
+            SqlParserPos node2Pos = node2.getParserPosition();
+            if (startNum <= node2Pos.getColumnNum() && endNum >= node2Pos.getEndColumnNum()) {
+                getOriginColumn(node2, context, sqlNodeAndOriginColumnStringMap);
+            }
         }
 
         context.setNodeColumnMap(sqlNodeAndOriginColumnStringMap);
 
-        return null;
+        return sql;
     }
 
     private void getOriginColumn(SqlNode node, MaskContext context, Map<SqlNode, String> sqlNodeAndOriginColumnStringMap) {
         Map<SqlNode, ColumnDesc> dcs = context.getDetailedColumnMap();
-        System.out.println(node.toString());
-        System.out.println("start: " + node.getParserPosition().getColumnNum() + ";end: " + node.getParserPosition().getEndColumnNum());
+//        log.info(node.toString());
+//        log.info("start: " + node.getParserPosition().getColumnNum() + ";end: " + node.getParserPosition().getEndColumnNum());
         if (node instanceof SqlIdentifier) {
             ColumnDesc dc = dcs.get(node);
             if (dc.getFromSelects() == null) {

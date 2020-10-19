@@ -161,4 +161,27 @@ public class SqlMaskTest {
         String maskSql = qs3.getMaskSql(originSql);
         compareSql(maskSql, expectSql);
     }
+
+    @Test
+    public void sqlTest15() throws Exception {
+        String originSql = "select name from emps where deptno > (select avg(deptno) from emps)";
+        String expectSql = "select hash_fun(1, 5, emps.name, '*') as name\n" +
+                "from sales.emps as emps\n" +
+                "where (emps.deptno > (select avg(emps.deptno)\n" +
+                "from sales.emps as emps))";
+        String maskSql = qs3.getMaskSql(originSql);
+        compareSql(maskSql, expectSql);
+    }
+
+    @Test
+    public void sqlTest16() throws Exception {
+        String originSql = "with t1 as (select deptno from emps) select name,deptno from emps where deptno > (select avg(deptno) from t1)";
+        String expectSql = "with t1 as (select emps.deptno\n" +
+                "from sales.emps as emps) (select hash_fun(1, 5, emps.name, '*') as name, hash_fun2(1, 6, emps.deptno, '*') as deptno\n" +
+                "from sales.emps as emps\n" +
+                "where (emps.deptno > (select avg(t1.deptno)\n" +
+                "from t1 as t1)))";
+        String maskSql = qs3.getMaskSql(originSql);
+        compareSql(maskSql, expectSql);
+    }
 }
