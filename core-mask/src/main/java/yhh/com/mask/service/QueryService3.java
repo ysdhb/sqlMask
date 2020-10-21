@@ -49,7 +49,7 @@ public class QueryService3 {
 
     @PostConstruct
     private void init() throws Exception {
-        ClassPathResource resource = new ClassPathResource("sales-csv.json");
+        ClassPathResource resource = new ClassPathResource(modelPath);
         File file = resource.getFile();
         Connection conn = QueryConnection.getConnection(file.getAbsolutePath());
         stmt = conn.createStatement();

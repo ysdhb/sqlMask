@@ -1,4 +1,4 @@
 mask:
   calcite:
     model:
-      path: core-mask/src/main/resources/sales-csv.json
+      path: sales-csv.json
